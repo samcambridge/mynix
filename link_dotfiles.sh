@@ -16,7 +16,6 @@ pass=${bldblu}*${txtrst}
 warn=${bldred}*${txtrst}
 ques=${bldblu}?${txtrst}
 
-
 # Red text
 function echo_r {
     echo "${bldred}$1${txtrst}"
@@ -115,12 +114,17 @@ header "Welcome to Jon's Unix environment installer!"
 info "All dotfiles will be installed to $HOME"
 
 install_term
+echo_g "Updating submodules"
+git submodule init && git submodule update
+cd myvim && git submodule init && git submodule update
 echo_g "Configuring tmux"
-ln -s tmux.conf ~/.tmux.conf
-ln -s tmux.conf.local ~/.tmux.conf.local
+ln -s $PWD/abs_path tmux.conf ~/.tmux.conf
+ln -s $PWD/tmux.conf.local ~/.tmux.conf.local
 echo_g "Configuring vim"
-ln -s myvim/vimrc ~/.vimrc
-mkdir ~/.vim-tmp
+rm -r ~/.vim/ ~/.vimrc
+ln -s $PWD/myvim/ ~/.vim
+ln -s $PWD/myvim/vimrc ~/.vimrc
+mkdir -p  ~/.vim-tmp
 
 echo
 echo_g "Enjoy."
