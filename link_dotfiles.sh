@@ -51,21 +51,6 @@ function apt {
 die() { echo >&2 -e "${bldred}\nERROR: $@${txtrst}\n"; exit 1; }
 run() { $*; code=$?; [ $code -ne 0 ] && die "command [$*] failed with error code $code"; }
 
-function install_term {
-    do_install zsh
-    if $do_install
-    then
-        echo_b "Installing zsh"
-        apt zsh
-    fi
-    do_install tmux
-    if $do_install
-    then
-        echo_b "Installing tmux"
-        apt tmux
-    fi
-}
-
 function do_install {
     installed $1
     do_install=false
@@ -113,18 +98,30 @@ function yes_or_no {
 header "Welcome to Jon's Unix environment installer!"
 info "All dotfiles will be installed to $HOME"
 
-install_term
+
+echo_g "Installing tmux"
+apt tmux
+echo_g "Installing ohmyzsh"
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+ln -s $PWD/zshrc ~/.zshrc
+sudo chsh -s /usr/bin/zsh
+echo_g "Installing ripgrep"
+run sudo snap install ripgrep --classic
 echo_g "Updating submodules"
 git submodule init && git submodule update
 cd myvim && git submodule init && git submodule update
 echo_g "Configuring tmux"
-ln -s $PWD/abs_path tmux.conf ~/.tmux.conf
+ln -s $PWD/tmux.conf ~/.tmux.conf
 ln -s $PWD/tmux.conf.local ~/.tmux.conf.local
 echo_g "Configuring vim"
 rm -r ~/.vim/ ~/.vimrc
 ln -s $PWD/myvim/ ~/.vim
 ln -s $PWD/myvim/vimrc ~/.vimrc
-mkdir -p  ~/.vim-tmp
+mkdir -p ~/.vim-tmp
+echo_g "Installing ctags"
+apt ctags
+echo_g "Installing vim plugins"
+vim +PluginInstall +qall
 
 echo
 echo_g "Enjoy."
