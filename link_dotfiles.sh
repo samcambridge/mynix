@@ -106,16 +106,17 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 ln -s $PWD/zshrc ~/.zshrc
 sudo chsh -s /usr/bin/zsh
 echo_g "Installing ripgrep"
-run sudo snap install ripgrep --classic
+curl -LO https://github.com/BurntSushi/ripgrep/releases/download/11.0.2/ripgrep_11.0.2_amd64.deb
+sudo dpkg -i ripgrep_11.0.2_amd64.deb
 echo_g "Updating submodules"
 git submodule init && git submodule update
-cd myvim && git submodule init && git submodule update
+cd myvim && git submodule init && git submodule update && cd ..
 echo_g "Configuring tmux"
 ln -s $PWD/tmux.conf ~/.tmux.conf
 ln -s $PWD/tmux.conf.local ~/.tmux.conf.local
 echo_g "Configuring vim"
-rm -fr ~/.vim/ ~/.vimrc
-ln -s $PWD/myvim/ ~/.vim
+rm -fr ~/.vim ~/.vimrc
+ln -s $PWD/myvim ~/.vim
 ln -s $PWD/myvim/vimrc ~/.vimrc
 mkdir -p ~/.vim-tmp
 echo_g "Installing vim plugins"
