@@ -114,12 +114,10 @@ echo_g "Configuring tmux"
 ln -s $PWD/tmux.conf ~/.tmux.conf
 ln -s $PWD/tmux.conf.local ~/.tmux.conf.local
 echo_g "Configuring vim"
-rm -r ~/.vim/ ~/.vimrc
+rm -fr ~/.vim/ ~/.vimrc
 ln -s $PWD/myvim/ ~/.vim
 ln -s $PWD/myvim/vimrc ~/.vimrc
 mkdir -p ~/.vim-tmp
-echo_g "Installing ctags"
-apt ctags
 echo_g "Installing vim plugins"
 vim +PluginInstall +qall
 
