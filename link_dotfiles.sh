@@ -86,7 +86,7 @@ function installed {
 function yes_or_no {
     txt=$1
     echo
-    read -n1 -p "${bldyll}$txt [y,N] ${txtrst}" answered_yes 
+    read -n1 -p "${bldyll}$txt [y,N] ${txtrst}" answered_yes
     echo
     case $answered_yes in
         y|Y) answered_yes=true ;;
@@ -121,6 +121,7 @@ ln -s $PWD/myvim/vimrc ~/.vimrc
 mkdir -p ~/.vim-tmp
 echo_g "Installing vim plugins"
 vim +PluginInstall +qall
+vim +VundleInstall +qall
 
 echo
 echo_g "Enjoy."
